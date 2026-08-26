@@ -500,14 +500,6 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FAndroidXRDisplayRefreshRateChanged
     float, FromRate,
     float, ToRate);
 
-// Broadcast via the AndroidXREventProxy in the event of
-// XR_TYPE_EVENT_DATA_RECOMMENDED_RESOLUTION_CHANGED_ANDROID
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FAndroidXRDRecommendedResolutionChangedDynamicDelegate,
-    float, RecommendedWidth,
-    float, RecommendedHeight,
-    float, MaxWidth,
-    float, MaxHeight);
-
 FORCEINLINE FGuid ToFGuid(const XrUuidEXT& XrUuid)
 {
     auto GuidBits = reinterpret_cast<const uint32*>(XrUuid.data);
@@ -741,7 +733,9 @@ struct FAndroidXRFaceState
 UENUM(BlueprintType)
 enum class EAndroidXRSceneMeshSemanticLabelSet : uint8
 {
+    // No semantic labels are needed for the mesh
     None,
+    // Semantic label information is needed for the mesh
     Default
 };
 
@@ -751,10 +745,15 @@ enum class EAndroidXRSceneMeshSemanticLabelSet : uint8
 UENUM(BlueprintType)
 enum class ESceneMeshSemanticLabel : uint8
 {
+    // This semantic indicates that the corresponding mesh element represents an unknown object.
     Other,
+    // This semantic indicates that the corresponding mesh element represents a floor.
     Floor,
+    // This semantic indicates that the corresponding mesh element represents a ceiling.
     Ceiling,
+    // This semantic indicates that the corresponding mesh element represents a wall.
     Wall,
+    // This semantic indicates that the corresponding mesh element represents a table.
     Table
 };
 
@@ -764,9 +763,13 @@ enum class ESceneMeshSemanticLabel : uint8
 UENUM(BlueprintType)
 enum class ESceneMeshTrackingState : uint8
 {
+    // The internal tracker is not yet ready to provide mesh data.
     Initializing,
+    // The internal tracker is actively tracking.
     Tracking,
+    // The internal tracker is waiting for valid measurements to integrate since the last mesh update.
     Waiting,
+    // The internal tracker has not received valid measurements for multiple cycles and is in an error state.
     Error
 };
 
@@ -779,8 +782,9 @@ enum class ESceneMeshTrackingState : uint8
 struct FAndroidXRSceneMeshingTracker
 {
     GENERATED_BODY()
-
+    // If the created tracker was created with normals
     bool bHasNormals{ };
+    // The native mesh tracker
     XrSceneMeshingTrackerANDROID Tracker{};
 };
 
@@ -794,48 +798,65 @@ USTRUCT(BlueprintType)
 struct FAndroidXRSceneMeshSnapshot
 {
     GENERATED_BODY()
-
+    // If the created tracker was created with normals
     bool bHasNormals{ };
+
+    // The native mesh snapshot
     XrSceneMeshSnapshotANDROID Snapshot{};
 };
 
+/**
+ * The Scene submesh state
+ */
 USTRUCT(BlueprintType)
 struct FAndroidXRSceneSubmeshState
 {
     GENERATED_BODY()
 
+    // The Id of the Submesh
     UPROPERTY(BlueprintReadOnly)
-    FGuid SubmeshId;
+    FGuid SubmeshId{};
 
+    // The last updated timespan for the submesh
     UPROPERTY(BlueprintReadOnly)
-    FTimespan LastUpdatedTimespan;
+    FTimespan LastUpdatedTimespan{};
 
+    // The pose of the submesh in base space
     UPROPERTY(BlueprintReadOnly)
-    FTransform PoseInBaseSpace;
+    FTransform PoseInBaseSpace{};
 
+    // The extents of the submesh
     UPROPERTY(BlueprintReadOnly)
-    FVector Extents;
+    FVector Extents{};
 };
 
+/**
+* The submesh data
+*/
 USTRUCT(BlueprintType)
 struct FAndroidXRSceneSubmeshData
 {
     GENERATED_BODY()
 
+    // The Id of the submesh
     UPROPERTY(BlueprintReadOnly)
-    FGuid SubmeshId;
+    FGuid SubmeshId{};
 
+    // The vertex positions of the submesh
     UPROPERTY(BlueprintReadOnly)
-    TArray<FVector> VertexPositions;
+    TArray<FVector> VertexPositions{};
 
+    // The vertex normals of the submesh
     UPROPERTY(BlueprintReadOnly)
-    TArray<FVector> VertexNormals;
+    TArray<FVector> VertexNormals{};
 
+    // The vertex semantics of the submesh
     UPROPERTY(BlueprintReadOnly)
-    TArray<uint8> VertexSemantics;
+    TArray<uint8> VertexSemantics{};
 
+    // The indicies of the submesh
     UPROPERTY(BlueprintReadOnly)
-    TArray<int32> Indexes;
+    TArray<int32> Indexes{};
 };
 
 FORCEINLINE XrExtent3Df ToXrExtent3Df(FVector UnrealExtent, float Scale)

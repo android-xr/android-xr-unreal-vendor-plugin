@@ -1,0 +1,38 @@
+{
+    "FileVersion": 3,
+    "Version": 1,
+    "VersionName": "1.0.0",
+    "FriendlyName": "AndroidXR Spatial Entities",
+    "Description": "Provides functionality for XR_EXT_spatial_entity",
+    "Category": "Augmented Reality",
+    "CreatedBy": "Google, Inc.",
+    "DocsURL": "",
+    "MarketplaceURL": "",
+    "SupportURL": "",
+    "EnabledByDefault": false,
+    "CanContainContent": false,
+    "IsBetaVersion": false,
+    "Installed": false,
+    "SupportedTargetPlatforms": [
+        "Android"
+    ],
+    "Modules": [
+        {
+            "Name": "AndroidXRSpatialEntities",
+            "Type": "Runtime",
+            "LoadingPhase": "PostConfigInit",
+            "PlatformAllowList": [
+                "Win64",
+                "Mac",
+                "Linux",
+                "Android"
+            ]
+        },
+    ],
+    "Plugins": [
+        {
+            "Name": "AndroidXR",
+            "Enabled": true
+        }
+    ]
+}

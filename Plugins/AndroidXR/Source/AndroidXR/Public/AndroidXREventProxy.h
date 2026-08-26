@@ -29,8 +29,5 @@ public:
     UPROPERTY(BlueprintAssignable, Category="AndroidXR Event")
     FAndroidXRDisplayRefreshRateChangedDynamicDelegate OnRefreshRateChangedDelegate;
 
-    UPROPERTY(BlueprintAssignable, Category="AndroidXR Event")
-    FAndroidXRDRecommendedResolutionChangedDynamicDelegate OnRecommendedResolutionChangedDelegate;
-
     static UAndroidXREventProxy* GetInstance();
 };

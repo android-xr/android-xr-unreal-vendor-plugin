@@ -14,6 +14,14 @@
 12. Hand Interaction
 13. Hand Interaction Input Device
 14. Hand Tracking Mesh
+15. Global Passthrough Dimming
+16. Light Estimation
+17. Recommended Resolution
+18. Spatial Entities
+19. Spatial Marker Tracking
+20. Spatial Plane Tracking
+21. Spatial Anchors
+22. System Extension Properties
 
 ## Supported Development Platforms
 - Windows

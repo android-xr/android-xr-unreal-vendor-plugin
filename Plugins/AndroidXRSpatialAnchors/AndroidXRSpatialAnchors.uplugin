@@ -1,0 +1,42 @@
+{
+    "FileVersion": 3,
+    "Version": 1,
+    "VersionName": "1.0.0",
+    "FriendlyName": "AndroidXR Spatial Anchors",
+    "Description": "Provides functionality for XR_EXT_spatial_anchors",
+    "Category": "Augmented Reality",
+    "CreatedBy": "Google, Inc.",
+    "DocsURL": "",
+    "MarketplaceURL": "",
+    "SupportURL": "",
+    "EnabledByDefault": false,
+    "CanContainContent": false,
+    "IsBetaVersion": false,
+    "Installed": false,
+    "SupportedTargetPlatforms": [
+        "Android"
+    ],
+    "Modules": [
+        {
+            "Name": "AndroidXRSpatialAnchors",
+            "Type": "Runtime",
+            "LoadingPhase": "PostConfigInit",
+            "PlatformAllowList": [
+                "Win64",
+                "Mac",
+                "Linux",
+                "Android"
+            ]
+        },
+    ],
+    "Plugins": [
+        {
+            "Name": "AndroidXR",
+            "Enabled": true
+        },
+        {
+            "Name": "AndroidXRSpatialEntities",
+            "Enabled": true
+        }
+    ]
+}

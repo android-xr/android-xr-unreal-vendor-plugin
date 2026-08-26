@@ -1,0 +1,38 @@
+{
+    "FileVersion": 3,
+    "Version": 1,
+    "VersionName": "1.0.0",
+    "FriendlyName": "AndroidXR Recommended Resolution",
+    "Description": "Provides functionality for XR_ANDROID_recommended_resolution",
+    "Category": "Virtual Reality",
+    "CreatedBy": "Google, Inc.",
+    "DocsURL": "",
+    "MarketplaceURL": "",
+    "SupportURL": "",
+    "EnabledByDefault": false,
+    "CanContainContent": false,
+    "IsBetaVersion": false,
+    "Installed": false,
+    "SupportedTargetPlatforms": [
+        "Android"
+    ],
+    "Modules": [
+        {
+            "Name": "AndroidXRRecommendedResolution",
+            "Type": "Runtime",
+            "LoadingPhase": "PostConfigInit",
+            "PlatformAllowList": [
+                "Win64",
+                "Mac",
+                "Linux",
+                "Android"
+            ]
+        }
+    ],
+    "Plugins": [
+        {
+            "Name": "AndroidXR",
+            "Enabled": true
+        }
+    ]
+}

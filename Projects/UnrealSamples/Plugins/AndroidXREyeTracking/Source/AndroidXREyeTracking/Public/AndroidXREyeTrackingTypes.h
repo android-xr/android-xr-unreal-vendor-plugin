@@ -19,58 +19,90 @@
 #include "openxr_delta.h"
 #include "AndroidXREyeTrackingTypes.generated.h"
 
+/**
+* The index of the eye
+*/
 UENUM(BlueprintType)
 enum class EAndroidXREyeIndex : uint8
 {
+    // Left Eye Index
     Left = 0,
+    // Right Eye Index
     Right = 1
 };
 
+/**
+* The state of the eye data
+*/
 UENUM(BlueprintType)
 enum class EAndroidXREyeState : uint8
 {
+    // The eye data is invalid
     Invalid = 0,
+    // The eye is gazing
     Gazing = 1,
+    // The eye is shut
     Shut = 2
 };
 
+/**
+* The eye tracking mode
+*/
 UENUM(BlueprintType)
 enum class EAndroidXREyeTrackingMode : uint8
 {
+    // Eyes are not being tracked
     Not_Tracking = 0,
+    // The right eye is being tracked
     Right = 1,
+    // The left eye is being tracked
     Left = 2,
+    // Both eyes are being tracked
     Both = 3
 };
 
+/**
+* Represents an eye tracker
+*/
 USTRUCT(BlueprintType)
 struct FAndroidXREyeTracker
 {
     GENERATED_BODY()
 
+    // The native eye tracker
     XrEyeTrackerANDROID EyeTracker{ XR_NULL_HANDLE };
 };
 
+/**
+* An eye data obtained from eye tracking
+*/
 USTRUCT(BlueprintType)
 struct FAndroidXREye
 {
     GENERATED_BODY()
 
+    // The state of the eye
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AndroidXR|Eye Tracking")
     EAndroidXREyeState EyeState{};
 
+    // The transform of the eye
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AndroidXR|Eye Tracking")
     FTransform Transform{};
 };
 
+/**
+* The eyes data obtained from eye tracking
+*/
 USTRUCT(BlueprintType)
 struct FAndroidXREyes
 {
     GENERATED_BODY()
 
+    // All the obtained eye data
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AndroidXR|Eye Tracking")
     TArray<FAndroidXREye> Eyes{};
 
+    // The tracking mode of the eyes
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AndroidXR|Eye Tracking")
     EAndroidXREyeTrackingMode Mode{};
 };

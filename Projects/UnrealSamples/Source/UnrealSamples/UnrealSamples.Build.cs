@@ -43,13 +43,18 @@ public class UnrealSamples : ModuleRules
             "AndroidXRDepthTexture",
             "AndroidXREyeTracking",
             "AndroidXRPassthroughMesh",
+            "AndroidXRLightEstimation",
             "HandTrackingMesh",
             "HeadMountedDisplay",
             "InputCore",
             "Niagara",
             "SlateCore",
             "ProceduralMeshComponent",
-            "XRBase"
+            "XRBase",
+            "AndroidXRSpatialEntities",
+            "AndroidXRSpatialPlaneTracking",
+            "AndroidXRSpatialMarkerTracking",
+            "AndroidXRSpatialAnchors"
         });
 
         // To include OnlineSubsystemSteam, add it to the plugins section in your uproject file with the Enabled attribute set to true

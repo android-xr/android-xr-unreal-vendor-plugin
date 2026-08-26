@@ -36,3 +36,8 @@
 #include "third_party/xr_android/xr_android_scene_meshing.h"
 #include "third_party/xr_android/xr_android_composition_layer_passthrough_mesh.h"
 #include "third_party/xr_android/xr_android_trackables_object.h"
+#include "third_party/xr_android/xr_android_global_passthrough_dimming.h"
+#include "third_party/xr_android/xr_spatial_entities.h"
+#include "third_party/xr_android/xr_android_enumerate_system_extension_properties.h"
+#include "third_party/xr_android/xr_android_light_estimation.h"
+#include "third_party/xr_android/xr_android_light_estimation_cubemap.h"

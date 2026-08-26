@@ -180,8 +180,6 @@ bool FAndroidXR::GetOptionalExtensions(TArray<const ANSICHAR*>& OutExtensions)
     OutExtensions.Add(XR_KHR_ANDROID_THREAD_SETTINGS_EXTENSION_NAME);
 #endif
     OutExtensions.Add(XR_EXT_DEBUG_UTILS_EXTENSION_NAME);
-
-    OutExtensions.Add(XR_ANDROID_RECOMMENDED_RESOLUTION_EXTENSION_NAME);
     return true;
 }
 
@@ -189,48 +187,6 @@ void FAndroidXR::OnEvent(XrSession InSession, const XrEventDataBaseHeader *InHea
 {
     switch (InHeader->type)
     {
-        // Can test with adb shell surfaceflinger --resolution-scale=[0.0,1.0]
-        case XR_TYPE_EVENT_DATA_RECOMMENDED_RESOLUTION_CHANGED_ANDROID:
-        {
-            uint32_t ViewCountOutput;
-            auto Result = xrEnumerateViewConfigurationViews(Instance,
-                IOpenXRHMDModule::Get().GetSystemId(),
-                XR_VIEW_CONFIGURATION_TYPE_PRIMARY_STEREO,
-                0,
-                &ViewCountOutput,
-                nullptr);
-
-            if (XR_UNQUALIFIED_SUCCESS(Result))
-            {
-                TArray<XrViewConfigurationView> Views;
-                Views.Init({ .type = XR_TYPE_VIEW_CONFIGURATION_VIEW }, ViewCountOutput);
-
-                Result = xrEnumerateViewConfigurationViews(Instance,
-                    IOpenXRHMDModule::Get().GetSystemId(),
-                    XR_VIEW_CONFIGURATION_TYPE_PRIMARY_STEREO,
-                    Views.Num(),
-                    &ViewCountOutput,
-                    Views.GetData());
-
-                if (XR_UNQUALIFIED_SUCCESS(Result))
-                {
-                    UAndroidXRBlueprintFunctionLibrary::GetEventProxy()->
-                        OnRecommendedResolutionChangedDelegate.Broadcast(
-                            Views[0].recommendedImageRectWidth,
-                            Views[0].recommendedImageRectHeight,
-                            Views[0].maxImageRectWidth,
-                            Views[0].maxImageRectHeight
-                        );
-                    break;
-                }
-            }
-
-            UE_LOG(LogAndroidXR, Error,
-                TEXT("OnEvent: received RECOMMENDED_RESOLUTION, "
-                    "xrEnumerateViewConfigurationViews failed with error %s"),
-                    OpenXRResultToString(Result));
-            break;
-        }
         case XR_TYPE_EVENT_DATA_PERF_SETTINGS_EXT:
         {
             const auto EventDataPerfSettings =

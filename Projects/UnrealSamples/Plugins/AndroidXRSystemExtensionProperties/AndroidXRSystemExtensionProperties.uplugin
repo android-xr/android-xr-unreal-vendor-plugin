@@ -1,0 +1,39 @@
+{
+    "FileVersion": 3,
+    "Version": 1,
+    "VersionName": "1.0.0",
+    "IsExperimentalVersion": false,
+    "IsBetaVersion": false,
+    "FriendlyName": "AndroidXR Enumerate System Extension Properties",
+    "Description": "Provides functionality for XR_ANDROID_enumerate_system_extension_properties",
+    "Category": "Other",
+    "CreatedBy": "Google, Inc.",
+    "CreatedByURL": "",
+    "DocsURL": "",
+    "MarketplaceURL": "",
+    "SupportURL": "",
+    "CanContainContent": true,
+    "Installed": false,
+    "SupportedTargetPlatforms": [
+        "Android"
+    ],
+    "Modules": [
+        {
+            "Name": "AndroidXRSystemExtensionProperties",
+            "Type": "Runtime",
+            "LoadingPhase": "PostConfigInit",
+            "PlatformAllowList": [
+                "Win64",
+                "Mac",
+                "Linux",
+                "Android"
+            ]
+        }
+    ],
+    "Plugins": [
+        {
+            "Name": "AndroidXR",
+            "Enabled": true
+        }
+    ]
+}

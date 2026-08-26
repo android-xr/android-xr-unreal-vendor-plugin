@@ -1,9 +1,9 @@
 {
     "FileVersion": 3,
     "Version": 1,
-    "VersionName": "0.9.0",
+    "VersionName": "1.0.0",
     "IsExperimentalVersion": false,
-    "IsBetaVersion": true,
+    "IsBetaVersion": false,
     "FriendlyName": "AndroidXR Passthrough Mesh",
     "Description": "Provides functionality for XR_ANDROID_composition_layer_passthrough_mesh",
     "Category": "Virtual Reality",
@@ -33,6 +33,10 @@
     "Plugins": [
         {
             "Name": "AndroidXR",
+            "Enabled": true
+        },
+        {
+            "Name": "ProceduralMeshComponent",
             "Enabled": true
         }
     ]

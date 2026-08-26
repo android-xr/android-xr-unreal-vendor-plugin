@@ -160,11 +160,17 @@ bool FAndroidXRSceneMeshing::CreateSceneMeshSnapshot(const FAndroidXRSceneMeshin
     {
         if (auto HMD = GEngine->XRSystem.Get()->GetIOpenXRHMD())
         {
+            auto WorldToMetersScale = GEngine->XRSystem->GetWorldToMetersScale();
             XrSceneMeshSnapshotCreateInfoANDROID CreateInfo
             {
                 .type = XR_TYPE_SCENE_MESH_SNAPSHOT_CREATE_INFO_ANDROID,
                 .baseSpace = HMD->GetTrackingSpace(),
-                .time = HMD->GetDisplayTime()
+                .time = HMD->GetDisplayTime(),
+                .boundingBox =
+                {
+                    .center = ToXrPose(BoundsTransform, WorldToMetersScale),
+                    .extents = ToXrExtent3Df(BoundsExtents, WorldToMetersScale)
+                }
             };
 
             // Bounding box is not yet implemented in OS: b/421446800

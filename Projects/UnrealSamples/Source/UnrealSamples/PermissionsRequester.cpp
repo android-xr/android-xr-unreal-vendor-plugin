@@ -21,6 +21,14 @@
 
 void UPermissionsRequester::OnPermissionGrantedHandler(const TArray<FString>& Permissions, const TArray<bool>& Status)
 {
+    if(UUnrealSamplesFunctionLibrary::IsPlatformAndroid())
+    {
+        auto Proxy = UAndroidPermissionCallbackProxy::GetInstance();
+        if(Proxy)
+        {
+            Proxy->OnPermissionsGrantedDelegate.Remove(PermissionHandle);
+        }
+    }
     PermissionsTable.Reset();
     for (auto i = 0; i < Permissions.Num(); i++)
     {
@@ -51,10 +59,11 @@ void UPermissionsRequester::RequestPermissions(const TArray<FString>& Permission
 {
     if (UUnrealSamplesFunctionLibrary::IsPlatformAndroid())
     {
-        auto Proxy = UAndroidPermissionFunctionLibrary::AcquirePermissions(Permissions);
-        if (Proxy)
+        auto Proxy = UAndroidPermissionCallbackProxy::GetInstance();
+        if(Proxy)
         {
-            Proxy->OnPermissionsGrantedDelegate.AddUObject(this, &UPermissionsRequester::OnPermissionGrantedHandler);
+            PermissionHandle = Proxy->OnPermissionsGrantedDelegate.AddUObject(this, &UPermissionsRequester::OnPermissionGrantedHandler);
+            UAndroidPermissionFunctionLibrary::AcquirePermissions(Permissions);
         }
     }
     else

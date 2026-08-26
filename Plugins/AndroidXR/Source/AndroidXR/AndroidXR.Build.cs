@@ -72,7 +72,7 @@ namespace UnrealBuildTool.Rules
             }
         }
 
-        public static void UpdateAndroidXRSpatialFeature(ModuleRules Rules)
+        public static void UpdateAndroidXRSpatialFeature(ModuleRules Rules, List<string> Permissions = null)
         {
             if (Rules.Target.Platform != UnrealTargetPlatform.Android)
             {
@@ -86,23 +86,34 @@ namespace UnrealBuildTool.Rules
             var Content = new StringBuilder();
             Content.AppendLine("<root xmlns:android=\"http://schemas.android.com/apk/res/android\"><androidManifestUpdates>");
             Content.AppendLine(GetManifestStringsForFeatureInfo(Rules));
+            if (Permissions != null)
+            {
+                //Add permissions if enabled:
+                Content.AppendLine("<setBoolFromProperty result = \"bEnablePermission\" ini = \"Engine\" section = \"/Script/AndroidXREditor.AndroidXRRuntimeManifestSettings\" property = \"bEnablePermissions\" default = \"true\" />");
+                Content.AppendLine("<if condition=\"bEnablePermission\"><true>");
+                foreach (var Permission in Permissions)
+                {
+                    Content.AppendLine($"<addPermission android:name=\"{Permission}\"/>\r\n");
+                }
+                Content.AppendLine("</true></if>");
+            }
             Content.AppendLine("</androidManifestUpdates></root>");
             File.WriteAllText(APLFile.FullName, Content.ToString());
             Rules.AdditionalPropertiesForReceipt.Add("AndroidPlugin", APLFile.FullName);
         }
 
-        private static (HashSet<string>,bool) GetUserSettings(ModuleRules Module)
+        private static (HashSet<string>, bool) GetUserSettings(ModuleRules Module)
         {
             DirectoryReference ProjectDirectory = Module.Target.ProjectFile?.Directory;
             ConfigHierarchy Configs = ConfigCache.ReadHierarchy(ConfigHierarchyType.Engine, ProjectDirectory, Module.Target.Platform);
             if (Configs == null)
             {
-                return ([],false);
+                return ([], false);
             }
             var Section = Configs.FindSection(AndroidXRSettingsKey);
             if (Section == null)
             {
-                return ([],false);
+                return ([], false);
             }
             var RequiredFeatures = new HashSet<string>();
             var RegisteredSDKLevels = new HashSet<string>();
@@ -112,17 +123,17 @@ namespace UnrealBuildTool.Rules
                 RequiredFeatures = [.. RequiredFeaturesStr];
             }
             var SpatialFeatureRequired = false;
-            if(Section.TryGetValue(SpatialFeatureRequiredKey, out var SpatialFeatureRequiredStr))
+            if (Section.TryGetValue(SpatialFeatureRequiredKey, out var SpatialFeatureRequiredStr))
             {
                 SpatialFeatureRequired = bool.Parse(SpatialFeatureRequiredStr);
             }
-            return (RequiredFeatures,SpatialFeatureRequired);
+            return (RequiredFeatures, SpatialFeatureRequired);
         }
 
         public static string GetManifestStringsForFeatureInfo(ModuleRules Module)
         {
             var AndroidXRPluginInfo = UnrealBuildTool.Plugins.GetPlugin("AndroidXR");
-            if(AndroidXRPluginInfo == null)
+            if (AndroidXRPluginInfo == null)
             {
                 throw new System.NullReferenceException("AndroidXR Plugin was not found. Please enable the plugin");
             }
@@ -140,9 +151,9 @@ namespace UnrealBuildTool.Rules
             }
             var RegisteredFeatures = new HashSet<string>();
             var SpatialVersion = 0;
-            foreach(var Plugin in Plugins)
+            foreach (var Plugin in Plugins)
             {
-                if(Plugin.PluginName != Module.Name)
+                if (Plugin.PluginName != Module.Name)
                 {
                     continue;
                 }

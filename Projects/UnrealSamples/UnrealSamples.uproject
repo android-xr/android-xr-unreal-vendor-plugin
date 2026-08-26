@@ -36,7 +36,7 @@
                 "Editor"
             ],
             "SupportedTargetPlatforms": [
-                "Win64",
+                "Win64"
             ]
         },
         {
@@ -123,7 +123,63 @@
             ]
         },
         {
+            "Name": "AndroidXRLightEstimation",
+            "Enabled": true,
+            "SupportedTargetPlatforms": [
+                "Android"
+            ]
+        },
+        {
             "Name": "AndroidXRPassthroughMesh",
+            "Enabled": true,
+            "SupportedTargetPlatforms": [
+                "Android"
+            ]
+        },
+        {
+            "Name": "AndroidXRGlobalPassthroughDimming",
+            "Enabled": true,
+            "SupportedTargetPlatforms": [
+                "Android"
+            ]
+        },
+        {
+            "Name": "AndroidXRSystemExtensionProperties",
+            "Enabled": true,
+            "SupportedTargetPlatforms": [
+                "Android"
+            ]
+        },
+        {
+            "Name": "AndroidXRSpatialEntities",
+            "Enabled": true,
+            "SupportedTargetPlatforms": [
+                "Android"
+            ]
+        },
+        {
+            "Name": "AndroidXRSpatialMarkerTracking",
+            "Enabled": true,
+            "SupportedTargetPlatforms": [
+                "Android"
+            ]
+        },
+        {
+            "Name": "AndroidXRSpatialPlaneTracking",
+            "Enabled": true,
+            "SupportedTargetPlatforms": [
+                "Android"
+            ]
+        },
+        {
+            "Name": "AndroidXRSpatialAnchors",
+            "Enabled": true,
+            "SupportedTargetPlatforms": [
+                "Android"
+            ]
+        },
+        {
+            "Name": "AndroidXRRecommendedResolution",
             "Enabled": true,
             "SupportedTargetPlatforms": [
                 "Android"

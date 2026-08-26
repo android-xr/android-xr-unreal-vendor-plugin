@@ -18,29 +18,31 @@ using EpicGames.Core;
 
 namespace UnrealBuildTool.Rules
 {
-	public class AndroidXRPassthroughMesh : ModuleRules
-	{
-		public AndroidXRPassthroughMesh(ReadOnlyTargetRules Target) : base(Target)
-		{
-			PublicIncludePathModuleNames.AddRange(
-				new string[]
-				{
-					"AndroidXR",
-				}
-			);
+    public class AndroidXRPassthroughMesh : ModuleRules
+    {
+        public AndroidXRPassthroughMesh(ReadOnlyTargetRules Target) : base(Target)
+        {
+            PublicIncludePathModuleNames.AddRange(
+                new string[]
+                {
+                    "AndroidXR",
+                }
+            );
 
-			PrivateDependencyModuleNames.AddRange(
-				new string[]
-				{
-					"AndroidXR",
-					"Core",
-					"CoreUObject",
-					"Engine",
-					"OpenXRHMD",
-					"RenderCore",
-				}
-			);
-            AndroidXR.UpdateAndroidXRSpatialFeature(this);
+            PrivateDependencyModuleNames.AddRange(
+                new string[]
+                {
+                    "AndroidXR",
+                    "AndroidXRTrackingSubsystem",
+                    "ProceduralMeshComponent",
+                    "Core",
+                    "CoreUObject",
+                    "Engine",
+                    "OpenXRHMD",
+                    "RenderCore",
+                }
+            );
+            AndroidXR.UpdateAndroidXRSpatialFeature(this, ["android.permission.SCENE_UNDERSTANDING_COARSE", "android.permission.SCENE_UNDERSTANDING_FINE"]);
         }
-	}
+    }
 }

@@ -26,18 +26,23 @@ class ANDROIDXRSTREAMINGEDITOR_API UAndroidXRStreamingClientSettings : public UO
 public:
     GENERATED_BODY()
 
+    // Whether to automatically start the streaming client on the connected device when VR preview is launched
     UPROPERTY(GlobalConfig, EditAnywhere)
     bool bAutoStartClientOnPreview{};
 
+    // Whether to automatically stop the streaming client when VR preview is stopped
     UPROPERTY(GlobalConfig, EditAnywhere)
     bool bAutoStopClientOnPreview{};
 
+    // Whether to select the first available compatible device when VR preview is launched
     UPROPERTY(GlobalConfig, EditAnywhere)
     bool bAutoSelectCompatibleDevice{};
 
+    // Whether to show error dialogs for AndroidXR Streaming
     UPROPERTY(GlobalConfig, EditAnywhere)
     bool bShowErrorDialogs = true;
 
+    // The streaming mode to use
     UPROPERTY(GlobalConfig, EditAnywhere)
     EAndroidXRClientStreamingMode StreamingMode{};
 };

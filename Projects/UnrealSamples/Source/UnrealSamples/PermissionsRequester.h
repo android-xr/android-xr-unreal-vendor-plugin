@@ -45,4 +45,6 @@ public:
 private:
     UPROPERTY()
     TMap<FString, bool> PermissionsTable{};
+
+    FDelegateHandle PermissionHandle;
 };

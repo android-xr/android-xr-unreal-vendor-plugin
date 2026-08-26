@@ -30,6 +30,7 @@ namespace UnrealBuildTool.Rules
                 new string[]
                 {
                     "AndroidXR",
+                    "AndroidXRTrackingSubsystem",
                     "Core",
                     "CoreUObject",
                     "Engine",
@@ -37,7 +38,7 @@ namespace UnrealBuildTool.Rules
                     "RenderCore"
                 }
             );
-            AndroidXR.UpdateAndroidXRSpatialFeature(this);
+            AndroidXR.UpdateAndroidXRSpatialFeature(this, ["android.permission.FACE_TRACKING"]);
         }
     }
 }

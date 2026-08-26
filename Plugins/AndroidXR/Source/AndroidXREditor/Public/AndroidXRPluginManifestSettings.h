@@ -45,12 +45,15 @@ public:
 };
 
 
-UCLASS(Config=Engine, DefaultConfig)
+UCLASS(Config = Engine, DefaultConfig)
 class ANDROIDXREDITOR_API UAndroidXRRuntimeManifestSettings : public UObject
 {
 	GENERATED_BODY()
 public:
-	UPROPERTY(GlobalConfig, EditAnywhere,meta = (GetOptions = "GetRegisteredHardwareFeatures"))
+	UPROPERTY(GlobalConfig, EditAnywhere)
+	bool bEnablePermissions{};
+
+	UPROPERTY(GlobalConfig, EditAnywhere, meta = (GetOptions = "GetRegisteredHardwareFeatures"))
 	TArray<FName> RequiredHardwareFeatures{};
 
 	UPROPERTY(GlobalConfig, EditAnywhere)
