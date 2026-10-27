@@ -71,6 +71,7 @@ FAndroidXRStreamingConsts::FAndroidXRStreamingConsts()
     SET_STRING(EAndroidXRStringKey::ClientStartingMessage, "Starting Streaming Client on {0}");
     SET_STRING(EAndroidXRStringKey::ClientStartedSuccessMessage, "XR Streaming client was successfully started on {0}");
     SET_STRING(EAndroidXRStringKey::ClientStoppingMessage, "Stopping Streaming Client on {0}");
+    SET_STRING(EAndroidXRStringKey::ClientStoppedSuccessMessage, "XR Streaming Client was successfully stopped on {0}");
     SET_STRING(EAndroidXRStringKey::ClientStopFailMessage, "XR Streaming Client could not be stopped on {0}. Failed with {0}");
     SET_STRING(EAndroidXRStringKey::ClientStartFailedMessage, "XR Streaming Client could not be started on {0}. Failed with: {0}");
     SET_STRING(EAndroidXRStringKey::InvalidTarget, "The selected XR Streaming target {0} is invalid.");

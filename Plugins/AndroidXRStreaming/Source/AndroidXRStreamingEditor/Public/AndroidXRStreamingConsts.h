@@ -15,9 +15,10 @@
 
 #pragma once
 #include "CoreMinimal.h"
+#include "AndroidXRStreamingConsts.generated.h"
 
 UENUM()
-enum class EAndroidXRStringKey
+enum class EAndroidXRStringKey : uint8
 {
     NoTargetSelected,
     InvalidTarget,
@@ -39,7 +40,7 @@ enum class EAndroidXRStringKey
 };
 
 UENUM()
-enum class EAndroidXRClientStreamingMode
+enum class EAndroidXRClientStreamingMode : uint8
 {
     USB,
     Wifi
