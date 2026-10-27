@@ -39,7 +39,6 @@ UAndroidXRStreamingRuntime::UAndroidXRStreamingRuntime()
 		}
 		if (FetchActiveRuntime())
 		{
-			auto ActiveRuntime = ActiveRuntimeInfo.Name.Len() > 0 ? ActiveRuntimeInfo.Name : ActiveRuntimeInfo.RegistryKey;
 			bIsActive = ActiveRuntimeInfo.Name == AndroidRuntimeName;
 		}
 	}
@@ -68,10 +67,11 @@ bool UAndroidXRStreamingRuntime::FetchAllAvailableRuntimes()
 	AvailableRuntimes.Reset();
 	bool bSuccess = false;
 	auto AvailableRuntimesKey = FString::Printf(TEXT("%s\\%s"), *OpenXRRuntimeRegistryKey, *AvailableRuntimesRegistryKey);
-	for (int32 RegistryIndex = 0; RegistryIndex < 2 && !bSuccess; ++RegistryIndex)
+
+	for (int32 RegistryIndex = 0; RegistryIndex < 2; ++RegistryIndex)
 	{
 		HKEY Key = 0;
-		const uint32 RegFlags = (RegistryIndex == 0) ? KEY_WOW64_32KEY : KEY_WOW64_64KEY;
+		const uint32 RegFlags = (RegistryIndex == 0) ? KEY_WOW64_64KEY : KEY_WOW64_32KEY;
 		if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, *AvailableRuntimesKey, 0, KEY_READ | RegFlags, &Key) == ERROR_SUCCESS)
 		{
 			DWORD RuntimeCount{};
@@ -90,9 +90,15 @@ bool UAndroidXRStreamingRuntime::FetchAllAvailableRuntimes()
 					if (Result == ERROR_SUCCESS)
 					{
 						FString CurrentRuntime = FString::ConstructFromPtrSize(NameBuffer.GetData(), CurrentLength);
-						FOpenXRRuntimeInfo RuntimeInfo{};
-						FetchRuntimeDetails(CurrentRuntime, RuntimeInfo);
-						AvailableRuntimes.Add(RuntimeInfo);
+						const bool bAlreadyAdded = AvailableRuntimes.ContainsByPredicate([&CurrentRuntime](const FOpenXRRuntimeInfo& RuntimeInfo) {
+							return RuntimeInfo.RegistryKey.Equals(CurrentRuntime, ESearchCase::IgnoreCase);
+							});
+						if (!bAlreadyAdded)
+						{
+							FOpenXRRuntimeInfo RuntimeInfo{};
+							FetchRuntimeDetails(CurrentRuntime, RuntimeInfo);
+							AvailableRuntimes.Add(RuntimeInfo);
+						}
 					}
 					CurrentLength = MaxNameLength;
 				}
@@ -101,28 +107,62 @@ bool UAndroidXRStreamingRuntime::FetchAllAvailableRuntimes()
 			RegCloseKey(Key);
 		}
 	}
+
 	return bSuccess;
 }
 
 bool UAndroidXRStreamingRuntime::FetchActiveRuntime()
 {
-	//There are two ways to set the runtime. First is to check the environment variable, this takes priority over the registry entry
+	// There are two ways to set the runtime. First check the environment variable; this takes priority over the registry entry.
 	auto ActiveRuntimeEntry = FPlatformMisc::GetEnvironmentVariable(*OpenXRRuntimeEnvVariable);
 	if (ActiveRuntimeEntry.Len() == 0)
 	{
-		if (!FPlatformMisc::QueryRegKey(HKEY_LOCAL_MACHINE, *OpenXRRuntimeRegistryKey, *ActiveRuntimeRegistryKey, ActiveRuntimeEntry))
+		auto ReadActiveRuntime = [this](uint32 RegFlags, FString& OutRuntime) -> bool
+		{
+			HKEY Key = 0;
+			if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, *OpenXRRuntimeRegistryKey, 0, KEY_READ | RegFlags, &Key) != ERROR_SUCCESS)
+			{
+				return false;
+			}
+
+			wchar_t Buffer[4096]{};
+			DWORD BufferSize = sizeof(Buffer);
+			DWORD ValueType = 0;
+			const LONG Result = RegQueryValueEx(
+				Key,
+				*ActiveRuntimeRegistryKey,
+				nullptr,
+				&ValueType,
+				reinterpret_cast<LPBYTE>(Buffer),
+				&BufferSize);
+
+			RegCloseKey(Key);
+
+			if (Result != ERROR_SUCCESS || (ValueType != REG_SZ && ValueType != REG_EXPAND_SZ))
+			{
+				return false;
+			}
+
+			OutRuntime = Buffer;
+			return !OutRuntime.IsEmpty();
+		};
+
+		if (!ReadActiveRuntime(KEY_WOW64_64KEY, ActiveRuntimeEntry) &&
+			!ReadActiveRuntime(KEY_WOW64_32KEY, ActiveRuntimeEntry))
 		{
 			return false;
 		}
 	}
+
 	auto RuntimePtr = Algo::FindByPredicate(AvailableRuntimes, [ActiveRuntimeEntry](const FOpenXRRuntimeInfo& RuntimeInfo) {
-		return RuntimeInfo.RegistryKey == ActiveRuntimeEntry;
+		return RuntimeInfo.RegistryKey.Equals(ActiveRuntimeEntry, ESearchCase::IgnoreCase);
 		});
 	if (RuntimePtr)
 	{
 		ActiveRuntimeInfo = *RuntimePtr;
 		return true;
 	}
+
 	UE_LOG(LogAndroidXRStreamingRuntime, Error, TEXT("Unable to fetch the active OpenXR runtime"));
 	return false;
 }
