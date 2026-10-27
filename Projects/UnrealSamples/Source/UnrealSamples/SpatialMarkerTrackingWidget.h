@@ -31,6 +31,24 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSpatialMarkerTrackingStartClicked, 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSpatialMarkerTrackingStopClicked);
 
 UCLASS()
+class UNREALSAMPLES_API USpatialSliderWidget : public UUserWidget
+{
+    GENERATED_BODY()
+public:
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (BindWidget))
+    TObjectPtr<USlider> Slider{};
+
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (BindWidget))
+    TObjectPtr<UTextBlock> SliderCurrentValueLabel{};
+
+    void NativeConstruct() override;
+
+private:
+    UFUNCTION()
+    void SliderValueChangedHandler(float Value);
+};
+
+UCLASS()
 class UNREALSAMPLES_API USpatialMarkerConfigWidget : public UUserWidget
 {
     GENERATED_BODY()
@@ -49,7 +67,7 @@ public:
     TObjectPtr<UCheckBox> OptimizeForFixedLengthMarker{};
 
     UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (BindWidget))
-    TObjectPtr<USlider> MarkerLengthSlider{};
+    TObjectPtr<USpatialSliderWidget> MarkerLengthSlider{};
 };
 
 UCLASS()

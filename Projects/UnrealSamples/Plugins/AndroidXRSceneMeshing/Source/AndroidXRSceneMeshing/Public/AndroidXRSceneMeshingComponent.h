@@ -103,6 +103,10 @@ public:
     UFUNCTION(BlueprintCallable)
     void CreateTracker();
 
+    // Destroys a mesh tracker
+    UFUNCTION(BlueprintCallable)
+    void DestroyTracker();
+
     // Performas a mesh query and broadcasts delegates
     UFUNCTION(BlueprintCallable)
     void RequestSubmeshes();

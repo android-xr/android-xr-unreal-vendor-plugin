@@ -30,11 +30,36 @@ TSharedRef<FAndroidXRStreamingConsts> FAndroidXRStreamingConsts::Get()
     return Instance.ToSharedRef();
 }
 
+static const TCHAR* GetEnumKeyString(EAndroidXRStringKey Key)
+{
+    switch (Key)
+    {
+#define ENUM_CASE(EnumVal) case EnumVal: return TEXT(#EnumVal);
+        ENUM_CASE(EAndroidXRStringKey::NoTargetSelected)
+        ENUM_CASE(EAndroidXRStringKey::InvalidTarget)
+        ENUM_CASE(EAndroidXRStringKey::NoCompatibleDevicesFound)
+        ENUM_CASE(EAndroidXRStringKey::SeachingForDevices)
+        ENUM_CASE(EAndroidXRStringKey::TargetSelectedMessage)
+        ENUM_CASE(EAndroidXRStringKey::StreamingErrorText)
+        ENUM_CASE(EAndroidXRStringKey::StreamingNotificationTitle)
+        ENUM_CASE(EAndroidXRStringKey::ClientStartingMessage)
+        ENUM_CASE(EAndroidXRStringKey::ClientStartedSuccessMessage)
+        ENUM_CASE(EAndroidXRStringKey::ClientStartFailedMessage)
+        ENUM_CASE(EAndroidXRStringKey::ClientStoppingMessage)
+        ENUM_CASE(EAndroidXRStringKey::ClientStoppedSuccessMessage)
+        ENUM_CASE(EAndroidXRStringKey::ClientStopFailMessage)
+        ENUM_CASE(EAndroidXRStringKey::StreamingClientRunning)
+        ENUM_CASE(EAndroidXRStringKey::ConnectedDevicesText)
+        ENUM_CASE(EAndroidXRStringKey::RefreshButtonText)
+        ENUM_CASE(EAndroidXRStringKey::ResetButtonText)
+#undef ENUM_CASE
+    }
+    return TEXT("");
+}
+
 FText FAndroidXRStreamingConsts::GetTextInternal(EAndroidXRStringKey Key)
 {
-    auto EnumPtr = StaticEnum<EAndroidXRStringKey>();
-    auto KeyStr = EnumPtr->GenerateFullEnumName(*EnumPtr->GetNameStringByValue(static_cast<int64>(Key)));
-    return FText::FromStringTable(ANDROIDXR_STREAMING_TABLE, KeyStr);
+    return FText::FromStringTable(ANDROIDXR_STREAMING_TABLE, GetEnumKeyString(Key));
 }
 
 FAndroidXRStreamingConsts::FAndroidXRStreamingConsts()

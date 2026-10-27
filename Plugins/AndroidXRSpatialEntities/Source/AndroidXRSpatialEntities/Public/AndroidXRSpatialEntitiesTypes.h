@@ -118,6 +118,14 @@ struct ANDROIDXRSPATIALENTITIES_API FAndroidXRSpatialCapabilityInfo
     TSet<ESpatialCapabilityFeature> SupportedFeatures{};
 };
 
+USTRUCT(BlueprintType)
+struct FSpatialContext
+{
+    GENERATED_BODY()
+
+    XrSpatialContextEXT NativeContext{};
+};
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSpatialContextCreatedDelegate);
 
 #pragma region NativeTypes

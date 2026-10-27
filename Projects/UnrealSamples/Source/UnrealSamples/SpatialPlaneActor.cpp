@@ -124,6 +124,11 @@ void ASpatialPlaneActor::DrawPlane(UAndroidXRSpatialPlaneEntity* Plane)
         return;
     }
 
+    if(RenderFilter.bEntityIdFilter && !RenderFilter.PlaneIds.Contains(Plane))
+    {
+        return;
+    }
+
     if(RenderFilter.bShouldRenderBounds)
     {
         auto BoundsIndex = RenderBounds(Plane, PlaneColor);

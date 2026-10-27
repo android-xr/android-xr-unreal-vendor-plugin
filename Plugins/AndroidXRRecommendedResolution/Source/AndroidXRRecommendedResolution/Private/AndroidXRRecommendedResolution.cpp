@@ -20,6 +20,8 @@
 #include <IOpenXRHMDModule.h>
 #include <IXRTrackingSystem.h>
 #include "IOpenXRHMD.h"
+#include "Misc/ConfigCacheIni.h"
+#include "Runtime/Launch/Resources/Version.h"
 
 DEFINE_LOG_CATEGORY(LogAndroidXRRecommendedResolution);
 
@@ -27,6 +29,17 @@ void FAndroidXRRecommendedResolution::StartupModule()
 {
     IAndroidXRRecommendedResolutionModule::StartupModule();
     RegisterOpenXRExtensionModularFeature();
+
+#if ENGINE_MAJOR_VERSION == 5 && ENGINE_MINOR_VERSION < 7
+    int32 ScalingMode = 0;
+    if (GConfig && GConfig->GetInt(TEXT("/Script/Engine.RendererSettings"), TEXT("xr.MobilePrimaryScalingMode"), ScalingMode, GEngineIni))
+    {
+        if (IConsoleVariable* CVar = IConsoleManager::Get().FindConsoleVariable(TEXT("xr.MobileLDRDynamicResolution")))
+        {
+            CVar->Set(ScalingMode, ECVF_SetByProjectSetting);
+        }
+    }
+#endif
 }
 
 void FAndroidXRRecommendedResolution::ShutdownModule()

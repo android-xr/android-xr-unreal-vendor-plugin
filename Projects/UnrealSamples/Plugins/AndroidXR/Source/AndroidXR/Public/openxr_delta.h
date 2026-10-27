@@ -41,3 +41,4 @@
 #include "third_party/xr_android/xr_android_enumerate_system_extension_properties.h"
 #include "third_party/xr_android/xr_android_light_estimation.h"
 #include "third_party/xr_android/xr_android_light_estimation_cubemap.h"
+#include "third_party/xr_android/xr_android_viewport_feathering.h"

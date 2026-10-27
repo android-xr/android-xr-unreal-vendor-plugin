@@ -28,8 +28,8 @@ protected:
     void UpdateEnabledComponents() override;
     void GetCapabilityConfigurations(TArray<XrSpatialCapabilityConfigurationBaseHeaderEXT*>& Headers) override;
     FSpatialComponentList* GetSpatialComponentList(XrSpatialComponentTypeEXT ComponentType) override;
-
     void ApplyToEntity(TObjectPtr<UAndroidXRSpatialPlaneEntity> Entity, const FSpatialEntityInfo& EntityInfo) override;
+
 private:
     XrSpatialCapabilityConfigurationPlaneTrackingEXT PlaneConfiguration{ XR_TYPE_SPATIAL_CAPABILITY_CONFIGURATION_PLANE_TRACKING_EXT, nullptr, XrSpatialCapabilityEXT::XR_SPATIAL_CAPABILITY_PLANE_TRACKING_EXT };
 

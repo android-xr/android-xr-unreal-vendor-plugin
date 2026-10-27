@@ -28,6 +28,7 @@ public class UnrealSamples : ModuleRules
             "Engine",
             "InputCore",
             "EnhancedInput",
+            "OpenXRHMD"
         });
 
         PrivateDependencyModuleNames.AddRange(new string[] {  });

@@ -34,7 +34,7 @@ void ApplySetting(FSpatialMarkerTrackingFeature& FeatureConfig, TObjectPtr<USpat
     FeatureConfig.bEnableMarkerType = Widget->EnableMarkerType->IsChecked();
     FeatureConfig.bOptimizeForMarkerSize = Widget->OptimizeForFixedLengthMarker->IsChecked();
     FeatureConfig.bOptimizeForStaticMarker = Widget->OptimizeForStaticMarker->IsChecked();
-    FeatureConfig.MarkerSideLength = Widget->MarkerLengthSlider->GetValue();
+    FeatureConfig.MarkerSideLength = Widget->MarkerLengthSlider->Slider->GetValue();
 }
 
 void SetNameForMarkerWidget(TObjectPtr<USpatialMarkerConfigWidget> Widget, const FString& Text)
@@ -135,4 +135,22 @@ void USpatialMarkerTrackingWidget::StopClickedHandler()
 void USpatialMarkerTrackingWidget::ForceUpdateClickedHandler()
 {
     OnForceUpdateClicked.Broadcast();
+}
+
+void USpatialSliderWidget::NativeConstruct()
+{
+    if(Slider)
+    {
+        Slider->OnValueChanged.RemoveAll(this);
+        Slider->OnValueChanged.AddUniqueDynamic(this, &USpatialSliderWidget::SliderValueChangedHandler);
+    }
+    UUserWidget::NativeConstruct();
+}
+
+void USpatialSliderWidget::SliderValueChangedHandler(float Value)
+{
+    if(SliderCurrentValueLabel)
+    {
+        SliderCurrentValueLabel->SetText(FText::FromString(FString::SanitizeFloat(Value)));
+    }
 }

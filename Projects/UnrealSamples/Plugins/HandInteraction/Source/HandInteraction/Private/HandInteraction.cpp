@@ -271,6 +271,11 @@ void FHandInteraction::EnumerateSources(TArray<FMotionControllerSource>& Sources
 
 bool FHandInteraction::GetInteractionPose(EControllerHand Hand, EOpenXRHandInteractionType InteractionType, FTransform& InteractionPose) const
 {
+	if (!GEngine || !GEngine->XRSystem.IsValid())
+	{
+		return false;
+	}
+
 	return GetInteractionPose(Hand, InteractionType, InteractionPose, GEngine->XRSystem.Get()->GetWorldToMetersScale());
 }
 

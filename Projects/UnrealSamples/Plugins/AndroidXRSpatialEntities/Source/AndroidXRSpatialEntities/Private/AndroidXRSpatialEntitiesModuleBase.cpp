@@ -25,6 +25,7 @@ DEFINE_LOG_CATEGORY(LogAndroidXRSpatialEntities);
 #define CHECK_OPENXR_STATUS_AND_RETURN(Tag, FunctionName, Result, ReturnType) if(!XR_UNQUALIFIED_SUCCESS(Result)){ LOG_OPENXR_ERROR(Tag, FunctionName, Result); return ReturnType; }
 #define CHECK_OPENXR_STATUS_AND_RETURN_BOOL(Tag, FunctionName, Result) CHECK_OPENXR_STATUS_AND_RETURN(Tag, FunctionName, Result, false);
 #define LOG_IF_OPENXR_ERROR(Tag, FunctionName, Result) if(!XR_UNQUALIFIED_SUCCESS(Result)){ LOG_OPENXR_ERROR(Tag, FunctionName, Result);}
+#define CHECK_SNAPSHOT_STATUS(Tag, FunctionName, Result, ReturnType) if(!XR_UNQUALIFIED_SUCCESS(Result)) { OnQueryDataFailed(); LOG_OPENXR_ERROR(Tag, FunctionName, Result); return ReturnType;}
 
 void FAndroidXRSpatialCapabilityModule::Start()
 {
@@ -351,6 +352,7 @@ void FAndroidXRSpatialCapabilityModule::DestroySpatialContext()
         LOG_IF_OPENXR_ERROR(Stop, xrDestroySpatialEntityEXT, Result);
     }
     TrackedEntities.Reset();
+    EnabledComponents.Reset();
     auto Result = xrDestroySpatialContextEXT(SpatialContext);
     LOG_IF_OPENXR_ERROR(Stop, xrDestroySpatialContextEXT, Result);
     SpatialContextDestroyed();
@@ -386,6 +388,7 @@ void FAndroidXRSpatialCapabilityModule::OnSpatialSnapshotDiscoveryComplete(XrFut
     bDiscoveryInProgress = false;
     if(bWasCancelled)
     {
+        OnQueryDataFailed();
         return;
     }
     auto HMD = GEngine->XRSystem.Get()->GetIOpenXRHMD();
@@ -403,8 +406,8 @@ void FAndroidXRSpatialCapabilityModule::OnSpatialSnapshotDiscoveryComplete(XrFut
     };
 
     auto Result = xrCreateSpatialDiscoverySnapshotCompleteEXT(SpatialContext, &CompletionInfo, &Completion);
-    CHECK_OPENXR_STATUS_AND_RETURN(OnSpatialSnapshotDiscoveryComplete, xrCreateSpatialDiscoverySnapshotCompleteEXT, Result, );
-    CHECK_OPENXR_STATUS_AND_RETURN(OnSpatialSnapshotDiscoveryComplete, xrCreateSpatialDiscoverySnapshotCompleteEXT_FutureResult, Completion.futureResult, );
+    CHECK_SNAPSHOT_STATUS(OnSpatialSnapshotDiscoveryComplete, xrCreateSpatialDiscoverySnapshotCompleteEXT, Result, );
+    CHECK_SNAPSHOT_STATUS(OnSpatialSnapshotDiscoveryComplete, xrCreateSpatialDiscoverySnapshotCompleteEXT_FutureResult, Completion.futureResult, );
     QuerySpatialData(Completion.snapshot, false);
     Result = xrDestroySpatialSnapshotEXT(Completion.snapshot);
     LOG_IF_OPENXR_ERROR(OnSpatialSnapshotDiscoveryComplete, xrDestroySpatialSnapshotEXT, Result);
@@ -502,6 +505,11 @@ void FAndroidXRSpatialCapabilityModule::QuerySpatialData(XrSpatialSnapshotEXT Sn
         EntityInfo.EntityId = EntityId;
         EntityInfo.EntityTrackingState = EntityState;
         EntityInfo.ComponentIndex = Index;
+        if(EntityId == XR_NULL_SPATIAL_ENTITY_ID_EXT)
+        {
+            EntityAdded(EntityInfo);
+            continue;
+        }
 
         auto Entry = TrackedEntities.Find(EntityId);
         if(Entry)
@@ -556,6 +564,7 @@ void FAndroidXRSpatialCapabilityModule::QuerySpatialData(XrSpatialSnapshotEXT Sn
             EntityAdded(EntityInfo);
         }
     }
+    OnSnapshotDataObtained();
 }
 
 bool FAndroidXRSpatialCapabilityModule::CreateDiscoverySnapshotRequest()
@@ -570,6 +579,7 @@ bool FAndroidXRSpatialCapabilityModule::CreateDiscoverySnapshotRequest()
         .componentTypeCount = static_cast<uint32_t>(EnabledComponents.Num()),
         .componentTypes = EnabledComponents.GetData()
     };
+    OnDiscoverySnapshotRequestCreated(CreateInfo);
     XrFutureEXT DiscoveryFuture{};
     auto Result = xrCreateSpatialDiscoverySnapshotAsyncEXT(SpatialContext, &CreateInfo, &DiscoveryFuture);
     if(XR_FAILED(Result))

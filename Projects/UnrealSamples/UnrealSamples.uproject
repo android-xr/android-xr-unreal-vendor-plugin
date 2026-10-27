@@ -63,7 +63,7 @@
             ]
         },
         {
-            "Name": "AndroidXRDeviceAnchorPersistence",
+            "Name": "AndroidXRAnchorPersistence",
             "Enabled": true,
             "SupportedTargetPlatforms": [
                 "Android"
@@ -137,14 +137,14 @@
             ]
         },
         {
-            "Name": "AndroidXRGlobalPassthroughDimming",
+            "Name": "AndroidXRGlobalDimming",
             "Enabled": true,
             "SupportedTargetPlatforms": [
                 "Android"
             ]
         },
         {
-            "Name": "AndroidXRSystemExtensionProperties",
+            "Name": "AndroidXRSystemExtensions",
             "Enabled": true,
             "SupportedTargetPlatforms": [
                 "Android"
@@ -179,7 +179,21 @@
             ]
         },
         {
+            "Name": "AndroidXRSpatialRaycast",
+            "Enabled": true,
+            "SupportedTargetPlatforms": [
+                "Android"
+            ]
+        },
+        {
             "Name": "AndroidXRRecommendedResolution",
+            "Enabled": true,
+            "SupportedTargetPlatforms": [
+                "Android"
+            ]
+        },
+        {
+            "Name": "AndroidXRViewportFeathering",
             "Enabled": true,
             "SupportedTargetPlatforms": [
                 "Android"

@@ -351,8 +351,15 @@ void UAndroidXRSceneMeshingComponent::CreateTracker()
         {
             MeshingModule.DestroySceneMeshingTracker(MeshingTracker);
         }
-
         MeshingModule.CreateSceneMeshingTracker(SemanticLabelSet, bEnableNormals, MeshingTracker);
+    }
+}
+
+void UAndroidXRSceneMeshingComponent::DestroyTracker()
+{
+    if(IAndroidXRSceneMeshingModule::IsAvailable() && MeshingTracker.Tracker)
+    {
+        IAndroidXRSceneMeshingModule::Get().DestroySceneMeshingTracker(MeshingTracker);
     }
 }
 

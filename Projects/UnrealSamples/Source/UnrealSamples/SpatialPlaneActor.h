@@ -47,6 +47,12 @@ struct FSpatialPlaneRenderFilter
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     ESpatialPlaneSemanticLabel SemanticLabel{};
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    bool bEntityIdFilter{};
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    TSet<UAndroidXRSpatialPlaneEntity*> PlaneIds{};
 };
 
 typedef struct FSpatialPlaneInfo

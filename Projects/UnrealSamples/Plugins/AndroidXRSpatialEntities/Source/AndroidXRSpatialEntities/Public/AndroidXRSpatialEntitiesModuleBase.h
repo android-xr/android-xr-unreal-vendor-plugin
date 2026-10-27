@@ -48,6 +48,15 @@ public:
     bool CreateDiscoverySnapshotRequest();
     bool GetSupportedCapabilities(TArray<ESpatialCapability>& SupportedCapabilities);
     bool GetCapabilityInfo(ESpatialCapability Capability, FAndroidXRSpatialCapabilityInfo& CapabilityInfo);
+    const FNativeSpatialCapabilitiesInfo GetNativeCapabilitiesInfo() const
+    {
+        return CapabilitiesInfo;
+    }
+
+    FSpatialContext GetSpatialContext() const
+    {
+        return FSpatialContext{ .NativeContext = SpatialContext };
+    }
 
     TMulticastDelegate<void()> OnSpatialContextCreated{};
     TMulticastDelegate<void()> OnSpatialContextDestroyed{};
@@ -56,10 +65,20 @@ protected:
     virtual void UpdateEnabledComponents() = 0;
     virtual void GetCapabilityConfigurations(TArray<XrSpatialCapabilityConfigurationBaseHeaderEXT*>& Headers) = 0;
     virtual FSpatialComponentList* GetSpatialComponentList(XrSpatialComponentTypeEXT ComponentType) = 0;
-    virtual void EntityAdded(const FSpatialEntityInfo& EntityInfo) = 0;
-    virtual void EntityUpdated(const FSpatialEntityInfo& EntityInfo) = 0;
-    virtual void EntityRemoved(const FSpatialEntityInfo& EntityInfo) = 0;
     virtual void GetCapabilityExtensions(TArray<const ANSICHAR*>& Extensions) = 0;
+
+    virtual void EntityAdded(const FSpatialEntityInfo& EntityInfo)
+    {
+    };
+    virtual void EntityUpdated(const FSpatialEntityInfo& EntityInfo)
+    {
+    };
+    virtual void EntityRemoved(const FSpatialEntityInfo& EntityInfo)
+    {
+    };
+    virtual void OnDiscoverySnapshotRequestCreated(XrSpatialDiscoverySnapshotCreateInfoEXT& CreateInfo)
+    {
+    }
 
     virtual void SubmitPreSpatialContextFutures(FAndroidXRFutures& Futures)
     {
@@ -84,6 +103,14 @@ protected:
     virtual bool ShouldAutoDiscoverEntities()
     {
         return true;
+    }
+
+    virtual void OnSnapshotDataObtained()
+    {
+    }
+
+    virtual void OnQueryDataFailed()
+    {
     }
 
     FAndroidXRFutures ActiveFutures{};
@@ -202,6 +229,16 @@ public:
         OnEntityRemoved.Broadcast(*Entry);
         Entities.Remove(EntityInfo.EntityId);
         (*Entry)->RemoveFromRoot();
+    }
+
+    TSpatialEntity* GetSpatialEntity(XrSpatialEntityIdEXT EntityId)
+    {
+        auto Entry = Entities.Find(EntityId);
+        if(!Entry)
+        {
+            return nullptr;
+        }
+        return *Entry;
     }
 
     TSpatialEntity* CreateNewEntityFromId(XrSpatialEntityIdEXT EntityId, XrSpatialEntityEXT SpatialEntity)

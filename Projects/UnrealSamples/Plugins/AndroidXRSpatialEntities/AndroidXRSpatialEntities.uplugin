@@ -1,7 +1,7 @@
 {
     "FileVersion": 3,
     "Version": 1,
-    "VersionName": "1.0.0",
+    "VersionName": "1.1.0",
     "FriendlyName": "AndroidXR Spatial Entities",
     "Description": "Provides functionality for XR_EXT_spatial_entity",
     "Category": "Augmented Reality",

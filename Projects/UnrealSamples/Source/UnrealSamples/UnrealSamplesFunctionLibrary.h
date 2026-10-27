@@ -36,4 +36,7 @@ public:
 
     UFUNCTION(BlueprintPure)
     static bool IsPlatformAndroid();
+
+    UFUNCTION(BlueprintCallable)
+    static void SetEnvironmentBlendMode(int BlendMode);
 };

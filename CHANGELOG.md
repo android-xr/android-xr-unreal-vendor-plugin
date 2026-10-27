@@ -8,6 +8,23 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this package adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-09-16
+
+### Added
+- **Unreal Engine 5.8 Compatibility**:
+  - Added full build and runtime support for **Unreal Engine 5.8** alongside **Unreal Engine 5.6** across all plugins and sample projects.
+- **Viewport Feathering**:
+  - `AndroidXRViewportFeathering` (`XR_ANDROID_viewport_feathering`) - Acquire information about the feathered insets for each side of each view.
+- **Spatial Discovery & Depth Raycast**:
+  - `AndroidXRSpatialRaycast` (`XR_ANDROID_spatial_discovery_raycast`) - Perform raycasts against spatial entities and tracked planes (`AndroidXRSpatialDiscoveryRaycast`) as well as asynchronous depth raycasts (`AndroidXRSpatialDepthRaycast` via `XR_SPATIAL_CAPABILITY_DEPTH_RAYCAST_ANDROID`), including new `SpatialDiscoveryRaycast` and `SpatialDepthRaycast` sample levels.
+
+### Updated & Fixed
+- Shortened Plugin Names for Plugins over 30 characters to decrease issues with file name length. Plugins Affected:
+  - `AndroidXRDeviceAnchorPersistence` to `AndroidXRAnchorPersistence`
+  - `AndroidXRGlobalPassthroughDimming` to `AndroidXRGlobalDimming`
+  - `AndroidXRSystemExtensionProperties` to `AndroidXRSystemExtensions`
+- Updated OpenXR environment blend mode (`SetEnvironmentBlendMode`), hand interaction, and skeletal mesh APIs for Unreal Engine 5.8 compatibility.
+
 ## [1.0.0] - 2026-08-03
 
 Official **1.0.0** release of Android XR Extensions for Unreal (`com.google.xr.extensions`), removing Developer Preview / Beta designations across all plugins.

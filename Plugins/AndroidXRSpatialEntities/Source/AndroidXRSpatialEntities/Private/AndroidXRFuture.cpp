@@ -118,5 +118,10 @@ void FAndroidXRFutures::CancelAll()
             .type = XR_TYPE_FUTURE_CANCEL_INFO_EXT,
             .future = Entry.Future
         };
+        auto Result = CancelFuture(Instance, &CancelInfo);
+        if(XR_FAILED(Result))
+        {
+            UE_LOG(LogAndroidXRSpatialFutures, Error, TEXT("xrCancelFuture failed with error %s"), OpenXRResultToString(Result));
+        }
     }
 }

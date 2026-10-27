@@ -39,6 +39,7 @@ void FAndroidXRSpatialPlaneTracking::UpdateEnabledComponents()
     AddComponentIfSupported(CapabilitiesInfo, XrSpatialComponentTypeEXT::XR_SPATIAL_COMPONENT_TYPE_POLYGON_2D_EXT, EnabledComponents);
     AddComponentIfSupported(CapabilitiesInfo, XrSpatialComponentTypeEXT::XR_SPATIAL_COMPONENT_TYPE_MESH_2D_EXT, EnabledComponents);
     AddComponentIfSupported(CapabilitiesInfo, XrSpatialComponentTypeEXT::XR_SPATIAL_COMPONENT_TYPE_PLANE_SEMANTIC_LABEL_EXT, EnabledComponents);
+    AddComponentIfSupported(CapabilitiesInfo, XrSpatialComponentTypeEXT::XR_SPATIAL_COMPONENT_TYPE_RAYCAST_RESULT_ANDROID, EnabledComponents);
 }
 
 void FAndroidXRSpatialPlaneTracking::GetCapabilityConfigurations(TArray<XrSpatialCapabilityConfigurationBaseHeaderEXT*>& Headers)
@@ -60,7 +61,6 @@ FSpatialComponentList* FAndroidXRSpatialPlaneTracking::GetSpatialComponentList(X
             return &PolygonList;
         case XR_SPATIAL_COMPONENT_TYPE_PLANE_SEMANTIC_LABEL_EXT:
             return &LabelsList;
-            break;
     }
     return nullptr;
 }
@@ -138,6 +138,5 @@ void FAndroidXRSpatialPlaneTracking::ApplyToEntity(TObjectPtr<UAndroidXRSpatialP
         }
     }
 }
-
 
 IMPLEMENT_MODULE(FAndroidXRSpatialPlaneTracking, AndroidXRSpatialPlaneTracking)

@@ -31,8 +31,11 @@ protected:
     UPROPERTY(BlueprintReadWrite)
     TObjectPtr<UPoseableMeshComponent> PoseableMeshComponent;
 
-    UPROPERTY(BlueprintReadOnly)
+#if ENGINE_MAJOR_VERSION > 5 || (ENGINE_MAJOR_VERSION == 5 && ENGINE_MINOR_VERSION >= 8)
+    FXRMotionControllerState MotionControllerData{};
+#else
     FXRMotionControllerData MotionControllerData{};
+#endif
 
     // NOTE that this material must have bUsedWithSkeletalMesh set to true
     UPROPERTY(EditAnywhere, BlueprintReadOnly)

@@ -15,6 +15,7 @@
 
 #include "UnrealSamplesFunctionLibrary.h"
 #include "Engine/AssetManager.h"
+#include <OpenXRBlueprintFunctionLibrary.h>
 
 TArray<FString> UUnrealSamplesFunctionLibrary::GetAllMapNames()
 {
@@ -54,5 +55,15 @@ bool UUnrealSamplesFunctionLibrary::IsPlatformAndroid()
     return true;
 #else
     return false;
+#endif
+}
+
+void UUnrealSamplesFunctionLibrary::SetEnvironmentBlendMode(int BlendMode)
+{
+#if ENGINE_MAJOR_VERSION > 5 || (ENGINE_MAJOR_VERSION == 5 && ENGINE_MINOR_VERSION >= 8)
+    EOpenXREnvironmentBlendMode NewBlendMode = (EOpenXREnvironmentBlendMode)BlendMode;
+    UOpenXRBlueprintFunctionLibrary::SetEnvironmentBlendMode(NewBlendMode);
+#else
+    UOpenXRBlueprintFunctionLibrary::SetEnvironmentBlendMode(BlendMode);
 #endif
 }
