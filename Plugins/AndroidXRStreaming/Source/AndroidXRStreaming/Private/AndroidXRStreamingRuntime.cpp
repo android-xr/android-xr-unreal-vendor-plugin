@@ -96,12 +96,17 @@ bool UAndroidXRStreamingRuntime::FetchAllAvailableRuntimes()
 					}
 					CurrentLength = MaxNameLength;
 				}
-				bSuccess = true;
+				/*
+				* Was causing parent loop exit after querying the 32-bit registry keys,
+				* ignoring the 64-bit runtime libraries (e.g. the Android XR runtime) found in the KEY_WOW64_64KEY pass
+				*/
+				//bSuccess = true;
 			}
 			RegCloseKey(Key);
 		}
+		else bSuccess = true;
 	}
-	return bSuccess;
+	return !AvailableRuntimes.IsEmpty();
 }
 
 bool UAndroidXRStreamingRuntime::FetchActiveRuntime()
